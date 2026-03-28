@@ -102,6 +102,7 @@ export function useGameState(puzzle: Puzzle | null, onWin: () => void) {
 
   const pushHistory = () => {
       setHistory(prev => [...prev, drafts]);
+      setMoves(m => m + 1);
   };
 
   const undo = () => {

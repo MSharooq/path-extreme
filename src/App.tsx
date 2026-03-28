@@ -4,10 +4,15 @@ import { Grid } from './components/Grid';
 import { WinModal } from './components/WinModal';
 import { LearnShapesModal } from './components/LearnShapesModal';
 import { ProfileModal } from './components/ProfileModal';
+import { LoginScreen } from './components/LoginScreen';
+import { LeaderboardModal } from './components/LeaderboardModal';
+import { EditProfileModal } from './components/EditProfileModal';
+import { PublicProfileModal } from './components/PublicProfileModal';
 import { usePuzzle } from './hooks/usePuzzle';
 import { useGameState } from './hooks/useGameState';
 import { useStreak } from './hooks/useStreak';
 import { useAuth } from './hooks/useAuth';
+import { submitScore } from './lib/leaderboard';
 
 const ClockIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-70"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>;
 const ResetIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>;
@@ -19,14 +24,28 @@ const ShapesIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="n
 function App() {
   const { puzzle, loading, error } = usePuzzle();
   const { streak, incrementStreak } = useStreak();
-  const { user, profile, updateDisplayName, loading: authLoading } = useAuth();
+  const { user, profile, updateDisplayName, updateProfile, loading: authLoading } = useAuth();
+  const [isGuest, setIsGuest] = useState(() => {
+    return sessionStorage.getItem('patch_extreme_guest') === 'true';
+  });
   const [showWin, setShowWin] = useState(false);
   const [showLearnShapes, setShowLearnShapes] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
+  const [viewProfileId, setViewProfileId] = useState<string | null>(null);
   const [updatingProfile, setUpdatingProfile] = useState(false);
 
-  const handleWin = () => {
+  const handleWin = async () => {
     if (puzzle) incrementStreak(puzzle.date);
     setShowWin(true);
+    // Submit score for logged-in users
+    if (user && !isGuest && timeLapsed > 0) {
+      try {
+        await submitScore(user.id, puzzle!.date, timeLapsed, moves);
+      } catch (e) {
+        console.error('Failed to submit score', e);
+      }
+    }
   };
 
   const {
@@ -54,19 +73,47 @@ function App() {
     }
   };
 
-  if (loading || authLoading) {
+  // 1. First, check authentication status
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--color-linkedin-bg)]">
          <div className="flex flex-col items-center gap-4">
             <div className="w-8 h-8 border-4 border-gray-200 border-t-[var(--color-linkedin-blue)] rounded-full animate-spin"></div>
             <p className="text-[var(--color-linkedin-text-muted)] font-medium">
-              {loading ? 'Generating logic grid...' : 'Checking authentication...'}
+              Checking authentication...
             </p>
          </div>
       </div>
     );
   }
 
+  // 2. If not authenticated and not a guest, show login screen immediately
+  if (!user && !isGuest) {
+    return (
+      <LoginScreen 
+        onGuest={() => {
+          setIsGuest(true);
+          sessionStorage.setItem('patch_extreme_guest', 'true');
+        }} 
+      />
+    );
+  }
+
+  // 3. Now that we are authorized (User or Guest), check if puzzle is still loading
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--color-linkedin-bg)]">
+         <div className="flex flex-col items-center gap-4">
+            <div className="w-8 h-8 border-4 border-gray-200 border-t-[var(--color-linkedin-blue)] rounded-full animate-spin"></div>
+            <p className="text-[var(--color-linkedin-text-muted)] font-medium">
+              Generating logic grid...
+            </p>
+         </div>
+      </div>
+    );
+  }
+
+  // 4. Handle errors if the puzzle failed to load
   if (error || !puzzle) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--color-linkedin-bg)] p-4 text-center">
@@ -96,6 +143,15 @@ function App() {
          timeLapsed={timeLapsed} 
          solved={solved}
          onReset={resetGame}
+         onSignInRequest={() => {
+           setIsGuest(false);
+           sessionStorage.removeItem('patch_extreme_guest');
+         }}
+         onLeaderboard={() => setShowLeaderboard(true)}
+         onEditProfile={() => setShowEditProfile(true)}
+         onViewMyProfile={() => {
+            if (user) setViewProfileId(user.id);
+         }}
       />
       
       <main className="flex-1 flex flex-col items-center py-6 px-4 md:py-12 relative overflow-y-auto w-full">
@@ -170,11 +226,35 @@ function App() {
             streak={streak}
             onReset={resetGame}
             onClose={() => setShowWin(false)}
+            onLeaderboard={() => setShowLeaderboard(true)}
          />
       )}
 
       {showLearnShapes && (
          <LearnShapesModal onClose={() => setShowLearnShapes(false)} />
+      )}
+
+      {showLeaderboard && puzzle && (
+         <LeaderboardModal
+           puzzleDate={puzzle.date}
+           currentUserId={user?.id}
+           onClose={() => setShowLeaderboard(false)}
+         />
+      )}
+
+      {showEditProfile && profile && (
+         <EditProfileModal 
+            profile={profile} 
+            onSave={updateProfile} 
+            onClose={() => setShowEditProfile(false)} 
+         />
+      )}
+
+      {viewProfileId && (
+         <PublicProfileModal 
+            userId={viewProfileId} 
+            onClose={() => setViewProfileId(null)} 
+         />
       )}
 
       {needsProfile && (

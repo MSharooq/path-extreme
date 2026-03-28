@@ -7,7 +7,17 @@ const UserIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="non
 
 const LogOutIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>;
 
-export function TopBar({ streak, dateStr, timeLapsed, solved, onReset }: { streak: number, dateStr: string, timeLapsed: number, solved: boolean, onReset: () => void }) {
+export function TopBar({ streak, dateStr, timeLapsed, solved, onReset, onSignInRequest, onLeaderboard, onEditProfile, onViewMyProfile }: { 
+  streak: number, 
+  dateStr: string, 
+  timeLapsed: number, 
+  solved: boolean, 
+  onReset: () => void,
+  onSignInRequest: () => void,
+  onLeaderboard: () => void,
+  onEditProfile: () => void,
+  onViewMyProfile: () => void
+}) {
   const { user, profile, signInWithGoogle, signOut, loading: authLoading } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
   
@@ -51,9 +61,22 @@ export function TopBar({ streak, dateStr, timeLapsed, solved, onReset }: { strea
 
         <div className="h-8 w-px bg-[var(--color-linkedin-border)] mx-1 hidden sm:block"></div>
 
+        {/* Leaderboard button */}
+        <button
+          onClick={onLeaderboard}
+          title="Leaderboard"
+          className="p-2 rounded-full hover:bg-[var(--color-linkedin-bg)] transition-colors text-amber-500 hover:text-amber-600"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+          </svg>
+        </button>
+
+        <div className="h-8 w-px bg-[var(--color-linkedin-border)] mx-1 hidden sm:block"></div>
+
         {!user ? (
           <button
-            onClick={signInWithGoogle}
+            onClick={onSignInRequest}
             disabled={authLoading}
             className="bg-[var(--color-linkedin-blue)] text-white font-bold px-4 py-1.5 rounded-full shadow-sm hover:bg-[#004182] transition-all text-xs sm:text-sm active:scale-95 disabled:opacity-50"
           >
@@ -89,6 +112,21 @@ export function TopBar({ streak, dateStr, timeLapsed, solved, onReset }: { strea
                     <p className="text-sm font-bold text-[var(--color-linkedin-text)] truncate">{user.email}</p>
                   </div>
                   <div className="p-1">
+                    <button
+                      onClick={() => { onViewMyProfile(); setShowDropdown(false); }}
+                      className="w-full flex items-center gap-3 px-3 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      View My Profile
+                    </button>
+                    <button
+                      onClick={() => { onEditProfile(); setShowDropdown(false); }}
+                      className="w-full flex items-center gap-3 px-3 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                      Edit Profile
+                    </button>
+                    <div className="my-1 border-t border-gray-100" />
                     <button
                       onClick={() => {
                         signOut();

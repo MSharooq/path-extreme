@@ -7,9 +7,10 @@ interface WinProps {
   streak: number;
   onReset: () => void;
   onClose: () => void;
+  onLeaderboard?: () => void;
 }
 
-export function WinModal({ dateStr, timeLapsed, moves, streak, onReset, onClose }: WinProps) {
+export function WinModal({ dateStr, timeLapsed, moves, streak, onReset, onClose, onLeaderboard }: WinProps) {
   const [copied, setCopied] = useState(false);
   const dateObj = new Date(dateStr);
   const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
@@ -61,6 +62,15 @@ export function WinModal({ dateStr, timeLapsed, moves, streak, onReset, onClose 
         >
           {copied ? 'Copied!' : 'Share'}
         </button>
+
+        {onLeaderboard && (
+          <button
+            onClick={() => { onClose(); onLeaderboard(); }}
+            className="w-full py-2.5 mb-2 rounded-full text-amber-600 border-2 border-amber-300 font-semibold text-base transition-all hover:bg-amber-50 active:scale-95 flex items-center justify-center gap-2"
+          >
+            🏆 View Leaderboard
+          </button>
+        )}
 
         <button 
           onClick={() => { onReset(); onClose(); }}
