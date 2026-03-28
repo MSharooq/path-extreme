@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchLeaderboard, type LeaderboardEntry } from '../lib/leaderboard';
 import { PublicProfileModal } from './PublicProfileModal';
+import { TrophyIcon, MedalIcon, StarIcon } from './icons';
 
 function FlagImage({ code }: { code: string }) {
   return (
@@ -29,10 +30,10 @@ function formatTime(secs: number) {
 }
 
 const getRankStyle = (rank: number) => {
-  if (rank === 1) return { bg: 'bg-amber-50 border-amber-200', badge: 'bg-amber-400 text-white', emoji: '🥇' };
-  if (rank === 2) return { bg: 'bg-slate-50 border-slate-200', badge: 'bg-slate-400 text-white', emoji: '🥈' };
-  if (rank === 3) return { bg: 'bg-orange-50 border-orange-200', badge: 'bg-orange-400 text-white', emoji: '🥉' };
-  return { bg: 'bg-white border-gray-100', badge: 'bg-gray-100 text-gray-600', emoji: '' };
+  if (rank === 1) return { bg: 'bg-amber-50 border-amber-200', badge: 'bg-amber-100 text-amber-700 border-amber-200', color: '#b45309' };
+  if (rank === 2) return { bg: 'bg-slate-50 border-slate-200', badge: 'bg-slate-100 text-slate-700 border-slate-200', color: '#64748b' };
+  if (rank === 3) return { bg: 'bg-orange-50 border-orange-200', badge: 'bg-orange-100 text-orange-700 border-orange-200', color: '#c2410c' };
+  return { bg: 'bg-white border-gray-100', badge: 'bg-gray-50 text-gray-500 border-gray-100', color: 'currentColor' };
 };
 
 export function LeaderboardModal({ puzzleDate, currentUserId, onClose }: LeaderboardModalProps) {
@@ -73,9 +74,11 @@ export function LeaderboardModal({ puzzleDate, currentUserId, onClose }: Leaderb
             <span className="text-xs font-bold uppercase tracking-wider">Close</span>
           </button>
           <div className="flex items-center gap-3 mb-1">
-            <span className="text-3xl">🏆</span>
+            <div className="p-2 bg-white/20 rounded-lg backdrop-blur-md">
+              <TrophyIcon className="w-6 h-6 text-white" />
+            </div>
             <div>
-              <h2 className="text-2xl font-extrabold tracking-tight">Leaderboard</h2>
+              <h2 className="text-2xl font-bold tracking-tight">Leaderboard</h2>
               <p className="text-blue-100 text-sm font-medium">{formattedDate}</p>
             </div>
           </div>
@@ -98,7 +101,9 @@ export function LeaderboardModal({ puzzleDate, currentUserId, onClose }: Leaderb
 
           {!loading && !error && entries.length === 0 && (
             <div className="text-center py-16">
-              <div className="text-6xl mb-4">🌟</div>
+              <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-100">
+                <StarIcon className="w-8 h-8 text-[#0A66C2]" />
+              </div>
               <h3 className="text-lg font-bold text-gray-800 mb-2">No scores yet!</h3>
               <p className="text-gray-500 text-sm">Be the first to complete today's puzzle and claim the top spot.</p>
             </div>
@@ -107,7 +112,7 @@ export function LeaderboardModal({ puzzleDate, currentUserId, onClose }: Leaderb
           {!loading && !error && entries.length > 0 && (
             <div className="space-y-2">
               {entries.map((entry) => {
-                const { bg, badge, emoji } = getRankStyle(entry.date_rank);
+                const { bg, badge } = getRankStyle(entry.date_rank);
                 const isCurrentUser = entry.user_id === currentUserId;
 
                 return (
@@ -117,8 +122,12 @@ export function LeaderboardModal({ puzzleDate, currentUserId, onClose }: Leaderb
                     className={`flex items-center gap-3 p-3 rounded-xl border ${bg} ${isCurrentUser ? 'ring-2 ring-[#0A66C2] ring-offset-1' : ''} transition-all cursor-pointer hover:shadow-md hover:scale-[1.01] active:scale-[0.99]`}
                   >
                     {/* Rank */}
-                    <div className={`w-8 h-8 flex-shrink-0 rounded-full ${badge} flex items-center justify-center text-sm font-extrabold`}>
-                      {emoji || entry.date_rank}
+                    <div className={`w-9 h-9 flex-shrink-0 rounded-full border ${badge} flex items-center justify-center text-xs font-bold`}>
+                      {entry.date_rank <= 3 ? (
+                        <MedalIcon className="w-5 h-5" color={getRankStyle(entry.date_rank).color} />
+                      ) : (
+                        entry.date_rank
+                      )}
                     </div>
 
                     {/* Avatar + Name */}
@@ -148,9 +157,9 @@ export function LeaderboardModal({ puzzleDate, currentUserId, onClose }: Leaderb
                     </div>
 
                     {/* Score */}
-                    <div className="text-right flex-shrink-0">
-                      <div className="text-base font-extrabold text-[#0A66C2]">{entry.composite_score}</div>
-                      <div className="text-[10px] text-gray-400 font-medium">pts</div>
+                    <div className="text-right flex-shrink-0 bg-white/50 px-3 py-1.5 rounded-lg border border-gray-100/50">
+                      <div className="text-base font-bold text-[#0A66C2]">{entry.composite_score}</div>
+                      <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">pts</div>
                     </div>
                   </div>
                 );

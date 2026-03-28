@@ -20,22 +20,21 @@ export async function submitScore(
 ) {
   const { data, error } = await supabase
     .from('scores')
-    .upsert(
-      {
-        user_id: userId,
-        puzzle_date: puzzleDate,
-        time_seconds: timeSeconds,
-        moves: moves,
-      },
-      {
-        onConflict: 'user_id,puzzle_date',
-        // Only update if the new score is better (lower composite)
-      }
-    )
+    .insert({
+      user_id: userId,
+      puzzle_date: puzzleDate,
+      time_seconds: timeSeconds,
+      moves: moves,
+    })
     .select()
     .single();
 
   if (error) {
+    // 23505 is the PostgreSQL error code for unique_violation
+    // This happens if the user has already submitted a score for this date.
+    if (error.code === '23505') {
+      return null;
+    }
     console.error('Error submitting score:', error);
     throw error;
   }

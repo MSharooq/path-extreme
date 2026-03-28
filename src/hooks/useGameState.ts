@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { Puzzle } from '../types';
 import { type CellPos, isValidShape } from '../engine/shapes';
 
-export function useGameState(puzzle: Puzzle | null, onWin: () => void) {
+export function useGameState(puzzle: Puzzle | null, onWin: () => void, isPaused: boolean = false) {
   const [drafts, setDrafts] = useState<Record<string, CellPos[]>>({});
   const [history, setHistory] = useState<Record<string, CellPos[]>[]>([]);
   const [lockedPieces, setLockedPieces] = useState<Set<string>>(new Set());
@@ -34,12 +34,12 @@ export function useGameState(puzzle: Puzzle | null, onWin: () => void) {
   }, [puzzle]);
 
   useEffect(() => {
-    if (!puzzle || solved) return;
+    if (!puzzle || solved || isPaused) return;
     const interval = setInterval(() => {
       setTimeLapsed(t => t + 1);
     }, 1000);
     return () => clearInterval(interval);
-  }, [puzzle, solved]);
+  }, [puzzle, solved, isPaused]);
 
   useEffect(() => {
      if (!puzzle || solved) return;

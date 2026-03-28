@@ -45,7 +45,7 @@ export function TopBar({ streak, dateStr, timeLapsed, solved, onReset, onSignInR
         {solved && (
           <button 
             onClick={onReset}
-            className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-extrabold text-[var(--color-linkedin-blue)] hover:bg-[#0A66C21A] transition-colors"
+            className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold text-[var(--color-linkedin-blue)] hover:bg-[#0A66C21A] transition-colors"
           >
             Reset Board
           </button>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { WorldIcon } from './icons';
 import type { Profile } from '../hooks/useAuth';
 
 interface EditProfileModalProps {
@@ -86,8 +87,8 @@ export function EditProfileModal({ profile, onSave, onClose }: EditProfileModalP
         <div className="p-6 border-b border-gray-100">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-extrabold text-gray-900">Edit Profile</h2>
-              <p className="text-sm text-gray-500 mt-0.5">Add your social links (all optional)</p>
+              <h2 className="text-xl font-bold text-gray-900">Edit Profile</h2>
+              <p className="text-sm text-gray-500 mt-0.5 font-medium">Add your social links (all optional)</p>
             </div>
             <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -162,7 +163,7 @@ export function EditProfileModal({ profile, onSave, onClose }: EditProfileModalP
                       className="rounded-[2px]"
                     />
                   ) : (
-                    <span className="text-lg">🌍</span>
+                    <WorldIcon className="w-5 h-5 text-gray-400" />
                   )}
                 </div>
                 <select

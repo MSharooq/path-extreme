@@ -8,6 +8,7 @@ import { LoginScreen } from './components/LoginScreen';
 import { LeaderboardModal } from './components/LeaderboardModal';
 import { EditProfileModal } from './components/EditProfileModal';
 import { PublicProfileModal } from './components/PublicProfileModal';
+import { TutorialModal } from './components/TutorialModal';
 import { usePuzzle } from './hooks/usePuzzle';
 import { useGameState } from './hooks/useGameState';
 import { useStreak } from './hooks/useStreak';
@@ -34,6 +35,9 @@ function App() {
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [viewProfileId, setViewProfileId] = useState<string | null>(null);
   const [updatingProfile, setUpdatingProfile] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(() => {
+    return !localStorage.getItem('patch_extreme_tutorial_seen');
+  });
 
   const handleWin = async () => {
     if (puzzle) incrementStreak(puzzle.date);
@@ -62,7 +66,7 @@ function App() {
     moves,
     timeLapsed,
     lastHintTime
-  } = useGameState(puzzle, handleWin);
+  } = useGameState(puzzle, handleWin, showTutorial || showLearnShapes);
 
   const handleSaveProfile = async (displayName: string) => {
     setUpdatingProfile(true);
@@ -214,6 +218,15 @@ function App() {
                   <li><strong className="text-[var(--color-linkedin-text)] block mb-0.5">Fixing Mistakes:</strong> Just click securely on an already drawn anchor to instantly clear and reset that specific shape!</li>
                   <li><strong className="text-[var(--color-linkedin-text)] block mb-0.5">Solutions & Locking:</strong> Once a painted shape exactly matches its puzzle solution orientation on the board, it will display hatching lines and lock permanently into the grid.</li>
                </ul>
+               <div className="mt-6 pt-4 border-t border-gray-100">
+                  <button 
+                    onClick={() => setShowTutorial(true)}
+                    className="flex items-center gap-2 text-[var(--color-linkedin-blue)] font-bold text-sm hover:underline"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    Replay Tutorial
+                  </button>
+                </div>
             </div>
          </div>
       </main>
@@ -262,6 +275,15 @@ function App() {
             onSave={handleSaveProfile} 
             loading={updatingProfile} 
          />
+      )}
+
+      {showTutorial && (
+        <TutorialModal 
+          onClose={() => {
+            setShowTutorial(false);
+            localStorage.setItem('patch_extreme_tutorial_seen', 'true');
+          }} 
+        />
       )}
     </div>
   );

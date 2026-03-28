@@ -19,25 +19,25 @@ export function LearnShapesModal({ onClose }: { onClose: () => void }) {
         </button>
 
         <div className="mb-6 border-b border-gray-100 pb-4">
-           <h2 className="text-xl sm:text-2xl font-bold text-[var(--color-linkedin-text)] tracking-tight">Learn the Shapes</h2>
-           <p className="text-sm text-[var(--color-linkedin-text-muted)] mt-1 font-medium">A visual guide to reading anchor clues.</p>
-        </div>
-        
-        <div className="overflow-y-auto pr-2 space-y-6 mb-2">
-           {shapes.map((s, i) => (
-              <div key={i} className="flex gap-4 items-center">
-                 <div className="w-16 h-16 shrink-0 bg-gray-50 border border-[var(--color-linkedin-grid-border)] rounded-xl flex items-center justify-center shadow-sm">
-                    <PieceShape shape={s.shape} values={s.values} color={s.color} />
-                 </div>
-                 <div>
-                    <h3 className="font-bold text-[var(--color-linkedin-text)] text-[15px] sm:text-base leading-none">{s.name}</h3>
-                    <p className="text-[13px] text-[var(--color-linkedin-text-muted)] leading-relaxed mt-1.5">{s.desc}</p>
-                 </div>
-              </div>
-           ))}
+          <h2 className="text-xl sm:text-2xl font-bold text-[var(--color-linkedin-text)] tracking-tight">Learn the Shapes</h2>
+          <p className="text-sm text-[var(--color-linkedin-text-muted)] mt-1 font-medium">A visual guide to reading anchor clues.</p>
         </div>
 
-        <button 
+        <div className="overflow-y-auto pr-2 space-y-6 mb-2">
+          {shapes.map((s, i) => (
+            <div key={i} className="flex gap-4 items-center">
+              <div className="w-16 h-16 shrink-0 bg-gray-50 border border-[var(--color-linkedin-grid-border)] rounded-xl flex items-center justify-center shadow-sm">
+                <PieceShape shape={s.shape} values={s.values} color={s.color} />
+              </div>
+              <div>
+                <h3 className="font-bold text-[var(--color-linkedin-text)] text-[15px] sm:text-base leading-none">{s.name}</h3>
+                <p className="text-[13px] text-[var(--color-linkedin-text-muted)] leading-relaxed mt-1.5">{s.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <button
           onClick={onClose}
           className="w-full mt-6 py-3 rounded-full text-white font-bold text-[15px] transition-all transform active:scale-95 bg-[var(--color-linkedin-blue)] hover:bg-[#004182] shadow-md hover:shadow-lg shrink-0"
         >

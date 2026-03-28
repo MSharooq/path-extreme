@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { TrophyIcon } from './icons';
 
 interface WinProps {
   dateStr: string;
@@ -36,9 +37,12 @@ export function WinModal({ dateStr, timeLapsed, moves, streak, onReset, onClose,
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
 
-        <div className="text-center mb-6 mt-2">
-          <h2 className="text-2xl font-bold text-[var(--color-linkedin-text)] tracking-tight">Great job!</h2>
-          <p className="text-sm text-[var(--color-linkedin-text-muted)] mt-1">{formattedDate}</p>
+        <div className="flex flex-col items-center mb-8">
+          <div className="bg-emerald-50 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-sm border border-emerald-100">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#057642" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          </div>
+          <h2 className="text-2xl font-bold text-[var(--color-linkedin-text)] text-center tracking-tight">Daily Puzzle Solved!</h2>
+          <p className="text-sm text-[var(--color-linkedin-text-muted)] font-medium mt-1">{formattedDate}</p>
         </div>
 
         <div className="bg-[var(--color-linkedin-bg)] rounded-lg p-4 mb-6">
@@ -66,9 +70,10 @@ export function WinModal({ dateStr, timeLapsed, moves, streak, onReset, onClose,
         {onLeaderboard && (
           <button
             onClick={() => { onClose(); onLeaderboard(); }}
-            className="w-full py-2.5 mb-2 rounded-full text-amber-600 border-2 border-amber-300 font-semibold text-base transition-all hover:bg-amber-50 active:scale-95 flex items-center justify-center gap-2"
+            className="w-full py-2.5 mb-2 rounded-full text-amber-700 border-2 border-amber-200 font-bold text-base transition-all hover:bg-amber-50 active:scale-95 flex items-center justify-center gap-2"
           >
-            🏆 View Leaderboard
+            <TrophyIcon className="w-5 h-5 text-amber-600" />
+            View Leaderboard
           </button>
         )}
 

@@ -67,11 +67,11 @@ export function LoginScreen({ onGuest }: LoginScreenProps) {
       <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transition-all duration-500 animate-in fade-in zoom-in-95 duration-700">
         {/* Header */}
         <div className="p-8 pb-6 text-center border-b border-gray-50 bg-gradient-to-b from-blue-50/50 to-white">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-[#0A66C2] rounded-xl text-white font-bold text-3xl mb-4 shadow-lg rotate-3 group-hover:rotate-0 transition-transform">
+          <div className="w-10 h-10 bg-[#0A66C2] rounded-lg text-white flex items-center justify-center font-bold text-2xl shadow-sm mb-4 mx-auto">
             in
           </div>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight mb-2">PatchExtreme</h1>
-          <p className="text-gray-500 font-medium">Daily logic puzzle for sharp minds.</p>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Welcome to PatchExtreme</h1>
+          <p className="text-gray-500 font-medium mb-8">The daily logic game for strategic thinkers.</p>
         </div>
 
         <div className="p-8 space-y-6">
@@ -96,7 +96,7 @@ export function LoginScreen({ onGuest }: LoginScreenProps) {
               {/* Google Button */}
               <button
                 onClick={() => signInWithGoogle()}
-                className="w-full flex items-center justify-center py-3.5 px-4 bg-white border border-gray-300 rounded-xl text-gray-700 font-bold hover:bg-gray-50 hover:border-gray-400 transition-all shadow-sm active:scale-[0.98]"
+                className="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-200 py-3 rounded-full text-gray-700 font-bold hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-95 shadow-sm"
               >
                 <GoogleIcon />
                 Continue with Google

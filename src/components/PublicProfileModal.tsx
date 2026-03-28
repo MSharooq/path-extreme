@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchPublicProfile, type PublicProfile } from '../lib/leaderboard';
+import { TrophyIcon } from './icons';
 
 function FlagImage({ code }: { code: string }) {
   return (
@@ -37,18 +38,7 @@ const GlobeIcon = () => (
   </svg>
 );
 
-const TrophyIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-  </svg>
-);
-
-const PuzzleIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-    <line x1="7" y1="7" x2="7.01" y2="7"/>
-  </svg>
-);
+// Icons are imported from ./icons
 
 interface PublicProfileModalProps {
   userId: string;
@@ -114,23 +104,24 @@ export function PublicProfileModal({ userId, onClose }: PublicProfileModalProps)
         ) : (
           <>
             {/* Hero Banner */}
-            <div className="h-24 bg-gradient-to-br from-[#0A66C2] via-indigo-600 to-violet-600 relative">
-              <div className="absolute inset-0 opacity-20"
-                style={{ backgroundImage: 'radial-gradient(circle at 20% 80%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)', backgroundSize: '30px 30px' }}
+            <div className="h-28 bg-[#0A66C2] relative">
+              <div className="absolute inset-0 opacity-10"
+                style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             </div>
 
             {/* Avatar */}
             <div className="relative px-6 pb-1">
-              <div className="absolute -top-10 left-6">
+              <div className="absolute -top-12 left-6">
                 {profile.avatar_url ? (
                   <img
                     src={profile.avatar_url}
                     alt={profile.display_name}
-                    className="w-20 h-20 rounded-2xl border-4 border-white shadow-lg object-cover"
+                    className="w-24 h-24 rounded-2xl border-4 border-white shadow-xl object-cover transition-transform hover:scale-[1.02]"
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-2xl border-4 border-white shadow-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-2xl font-extrabold">
+                  <div className="w-24 h-24 rounded-2xl border-4 border-white shadow-xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-400 text-3xl font-bold">
                     {getInitials(profile.display_name)}
                   </div>
                 )}
@@ -138,50 +129,50 @@ export function PublicProfileModal({ userId, onClose }: PublicProfileModalProps)
             </div>
 
             {/* Name & Location */}
-            <div className="pt-14 px-6 pb-4">
+            <div className="pt-16 px-6 pb-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <h2 className="text-xl font-extrabold text-gray-900 leading-tight">{profile.display_name}</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 leading-tight tracking-tight">{profile.display_name}</h2>
                   {profile.country_code && (
-                    <div className="flex items-center gap-2 mt-1">
+                    <div className="flex items-center gap-2 mt-1.5">
                       <FlagImage code={profile.country_code} />
-                      <span className="text-sm text-gray-500 font-medium">{profile.country_code}</span>
+                      <span className="text-sm text-gray-500 font-semibold uppercase tracking-wider">{profile.country_code}</span>
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Stats Row */}
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 flex items-center gap-3">
-                  <div className="w-9 h-9 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600">
-                    <TrophyIcon />
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                <div className="bg-amber-50/50 border border-amber-100 rounded-2xl p-4 flex flex-col gap-2 transition-all hover:bg-amber-50">
+                  <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 shadow-sm">
+                    <TrophyIcon className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="text-xl font-extrabold text-amber-700 leading-tight">
+                    <div className="text-2xl font-bold text-amber-700 leading-none">
                       {profile.world_rank != null ? `#${profile.world_rank}` : '—'}
                     </div>
-                    <div className="text-[11px] text-amber-600 font-semibold">World Rank</div>
+                    <div className="text-[11px] text-amber-600 font-bold uppercase tracking-wider mt-1">World Rank</div>
                   </div>
                 </div>
 
-                <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 flex items-center gap-3">
-                  <div className="w-9 h-9 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
-                    <PuzzleIcon />
+                <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-4 flex flex-col gap-2 transition-all hover:bg-blue-50">
+                  <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 shadow-sm">
+                    <TrophyIcon className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="text-xl font-extrabold text-blue-700 leading-tight">
+                    <div className="text-2xl font-bold text-blue-700 leading-none">
                       {profile.total_puzzles_solved}
                     </div>
-                    <div className="text-[11px] text-blue-600 font-semibold">Puzzles Solved</div>
+                    <div className="text-[11px] text-blue-600 font-bold uppercase tracking-wider mt-1">Solved</div>
                   </div>
                 </div>
               </div>
 
               {profile.best_score != null && (
-                <div className="mt-3 bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5 flex items-center justify-between">
-                  <span className="text-sm text-gray-500 font-medium">Best Score</span>
-                  <span className="font-extrabold text-gray-800">{profile.best_score} <span className="text-xs font-normal text-gray-400">pts</span></span>
+                <div className="mt-4 bg-gray-50/80 border border-gray-100 rounded-2xl px-5 py-3.5 flex items-center justify-between transition-all hover:bg-gray-50">
+                  <span className="text-sm text-gray-500 font-bold uppercase tracking-wider">Best Score</span>
+                  <span className="text-lg font-bold text-gray-900 tracking-tight">{profile.best_score} <span className="text-xs font-semibold text-gray-400 ml-0.5 uppercase tracking-normal">pts</span></span>
                 </div>
               )}
 
