@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { TrophyIcon, WorldIcon } from './icons';
 
 const FlameIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"></path></svg>;
 
@@ -61,15 +62,26 @@ export function TopBar({ streak, dateStr, timeLapsed, solved, onReset, onSignInR
 
         <div className="h-8 w-px bg-[var(--color-linkedin-border)] mx-1 hidden sm:block"></div>
 
-        {/* Leaderboard button */}
-        <button
+        <button 
           onClick={onLeaderboard}
-          title="Leaderboard"
-          className="p-2 rounded-full hover:bg-[var(--color-linkedin-bg)] transition-colors text-amber-500 hover:text-amber-600"
+          className="flex items-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-4 sm:py-2 bg-amber-50 rounded-full border border-amber-100 text-amber-700 hover:bg-amber-100 transition-all font-bold text-xs sm:text-sm shadow-sm active:scale-95 group"
+          title="Daily Leaderboard"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-          </svg>
+          <TrophyIcon className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:rotate-12" />
+          <span className="hidden sm:inline">Daily Rank</span>
+        </button>
+
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            const event = new CustomEvent('open-world-rank');
+            window.dispatchEvent(event);
+          }}
+          className="flex items-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-4 sm:py-2 bg-slate-50 rounded-full border border-slate-100 text-slate-700 hover:bg-slate-100 transition-all font-bold text-xs sm:text-sm shadow-sm active:scale-95 group"
+          title="World Rankings"
+        >
+          <WorldIcon className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:scale-110" />
+          <span className="hidden sm:inline">World Rank</span>
         </button>
 
         <div className="h-8 w-px bg-[var(--color-linkedin-border)] mx-1 hidden sm:block"></div>

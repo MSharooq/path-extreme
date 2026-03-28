@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TopBar } from './components/TopBar';
 import { Grid } from './components/Grid';
 import { WinModal } from './components/WinModal';
@@ -9,6 +9,7 @@ import { LeaderboardModal } from './components/LeaderboardModal';
 import { EditProfileModal } from './components/EditProfileModal';
 import { PublicProfileModal } from './components/PublicProfileModal';
 import { TutorialModal } from './components/TutorialModal';
+import { WorldRankModal } from './components/WorldRankModal';
 import { usePuzzle } from './hooks/usePuzzle';
 import { useGameState } from './hooks/useGameState';
 import { useStreak } from './hooks/useStreak';
@@ -35,6 +36,7 @@ function App() {
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [viewProfileId, setViewProfileId] = useState<string | null>(null);
   const [updatingProfile, setUpdatingProfile] = useState(false);
+  const [showWorldRank, setShowWorldRank] = useState(false);
   const [showTutorial, setShowTutorial] = useState(() => {
     return !localStorage.getItem('patch_extreme_tutorial_seen');
   });
@@ -67,6 +69,12 @@ function App() {
     timeLapsed,
     lastHintTime
   } = useGameState(puzzle, handleWin, showTutorial || showLearnShapes);
+
+  useEffect(() => {
+    const handleOpenWorldRank = () => setShowWorldRank(true);
+    window.addEventListener('open-world-rank', handleOpenWorldRank);
+    return () => window.removeEventListener('open-world-rank', handleOpenWorldRank);
+  }, []);
 
   const handleSaveProfile = async (displayName: string) => {
     setUpdatingProfile(true);
@@ -283,6 +291,13 @@ function App() {
             setShowTutorial(false);
             localStorage.setItem('patch_extreme_tutorial_seen', 'true');
           }} 
+        />
+      )}
+
+      {showWorldRank && (
+        <WorldRankModal 
+          currentUserId={user?.id}
+          onClose={() => setShowWorldRank(false)}
         />
       )}
     </div>

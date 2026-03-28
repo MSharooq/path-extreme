@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchPublicProfile, type PublicProfile } from '../lib/leaderboard';
-import { TrophyIcon } from './icons';
+import { TrophyIcon, WorldIcon } from './icons';
 
 function FlagImage({ code }: { code: string }) {
   return (
@@ -144,17 +144,24 @@ export function PublicProfileModal({ userId, onClose }: PublicProfileModalProps)
 
               {/* Stats Row */}
               <div className="mt-6 grid grid-cols-2 gap-4">
-                <div className="bg-amber-50/50 border border-amber-100 rounded-2xl p-4 flex flex-col gap-2 transition-all hover:bg-amber-50">
-                  <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 shadow-sm">
-                    <TrophyIcon className="w-5 h-5" />
+                <button 
+                  onClick={() => {
+                    const event = new CustomEvent('open-world-rank');
+                    window.dispatchEvent(event);
+                    onClose();
+                  }}
+                  className="bg-slate-50 border border-slate-100 rounded-2xl p-4 flex flex-col gap-2 transition-all hover:bg-slate-100 hover:scale-[1.02] active:scale-[0.98] text-left group"
+                >
+                  <div className="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 shadow-sm group-hover:scale-110 transition-transform">
+                    <WorldIcon className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-amber-700 leading-none">
+                    <div className="text-2xl font-bold text-slate-700 leading-none">
                       {profile.world_rank != null ? `#${profile.world_rank}` : '—'}
                     </div>
-                    <div className="text-[11px] text-amber-600 font-bold uppercase tracking-wider mt-1">World Rank</div>
+                    <div className="text-[11px] text-slate-500 font-bold uppercase tracking-wider mt-1">World Rank</div>
                   </div>
-                </div>
+                </button>
 
                 <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-4 flex flex-col gap-2 transition-all hover:bg-blue-50">
                   <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 shadow-sm">

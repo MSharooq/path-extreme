@@ -12,6 +12,17 @@ export interface LeaderboardEntry {
   date_rank: number;
 }
 
+export interface WorldRankEntry {
+  user_id: string;
+  display_name: string;
+  country_code: string | null;
+  avatar_url: string | null;
+  best_score: number;
+  total_solved: number;
+  skill_rating: number;
+  world_rank: number;
+}
+
 export async function submitScore(
   userId: string,
   puzzleDate: string,
@@ -51,6 +62,20 @@ export async function fetchLeaderboard(puzzleDate: string): Promise<LeaderboardE
 
   if (error) {
     console.error('Error fetching leaderboard:', error);
+    throw error;
+  }
+  return data || [];
+}
+
+export async function fetchWorldLeaderboard(): Promise<WorldRankEntry[]> {
+  const { data, error } = await supabase
+    .from('world_leaderboard')
+    .select('*')
+    .order('world_rank', { ascending: true })
+    .limit(100);
+
+  if (error) {
+    console.error('Error fetching world leaderboard:', error);
     throw error;
   }
   return data || [];

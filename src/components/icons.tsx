@@ -52,6 +52,48 @@ export const StarIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
   </svg>
 );
 
+export const MedalGold = ({ className = "w-6 h-6" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="10" fill="url(#gold_grad)" stroke="#D4AF37" strokeWidth="1.5"/>
+    <path d="M12 7L13.5 10.5H17L14.25 12.5L15.5 16L12 14L8.5 16L9.75 12.5L7 10.5H10.5L12 7Z" fill="white" fillOpacity="0.8"/>
+    <defs>
+      <linearGradient id="gold_grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FFD700"/>
+        <stop offset="0.5" stopColor="#FDB931"/>
+        <stop offset="1" stopColor="#D4AF37"/>
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+export const MedalSilver = ({ className = "w-6 h-6" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="10" fill="url(#silver_grad)" stroke="#94A3B8" strokeWidth="1.5"/>
+    <path d="M12 7L13.5 10.5H17L14.25 12.5L15.5 16L12 14L8.5 16L9.75 12.5L7 10.5H10.5L12 7Z" fill="white" fillOpacity="0.8"/>
+    <defs>
+      <linearGradient id="silver_grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#E2E8F0"/>
+        <stop offset="0.5" stopColor="#CBD5E1"/>
+        <stop offset="1" stopColor="#94A3B8"/>
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+export const MedalBronze = ({ className = "w-6 h-6" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="10" fill="url(#bronze_grad)" stroke="#B45309" strokeWidth="1.5"/>
+    <path d="M12 7L13.5 10.5H17L14.25 12.5L15.5 16L12 14L8.5 16L9.75 12.5L7 10.5H10.5L12 7Z" fill="white" fillOpacity="0.8"/>
+    <defs>
+      <linearGradient id="bronze_grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FDE68A"/>
+        <stop offset="0.5" stopColor="#F59E0B"/>
+        <stop offset="1" stopColor="#B45309"/>
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
 export const WorldIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
   <svg 
     className={className} 
