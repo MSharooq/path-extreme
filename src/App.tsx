@@ -3,9 +3,11 @@ import { TopBar } from './components/TopBar';
 import { Grid } from './components/Grid';
 import { WinModal } from './components/WinModal';
 import { LearnShapesModal } from './components/LearnShapesModal';
+import { ProfileModal } from './components/ProfileModal';
 import { usePuzzle } from './hooks/usePuzzle';
 import { useGameState } from './hooks/useGameState';
 import { useStreak } from './hooks/useStreak';
+import { useAuth } from './hooks/useAuth';
 
 const ClockIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-70"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>;
 const ResetIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>;
@@ -17,8 +19,10 @@ const ShapesIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="n
 function App() {
   const { puzzle, loading, error } = usePuzzle();
   const { streak, incrementStreak } = useStreak();
+  const { user, profile, updateDisplayName, loading: authLoading } = useAuth();
   const [showWin, setShowWin] = useState(false);
   const [showLearnShapes, setShowLearnShapes] = useState(false);
+  const [updatingProfile, setUpdatingProfile] = useState(false);
 
   const handleWin = () => {
     if (puzzle) incrementStreak(puzzle.date);
@@ -41,12 +45,23 @@ function App() {
     lastHintTime
   } = useGameState(puzzle, handleWin);
 
-  if (loading) {
+  const handleSaveProfile = async (displayName: string) => {
+    setUpdatingProfile(true);
+    try {
+      await updateDisplayName(displayName);
+    } finally {
+      setUpdatingProfile(false);
+    }
+  };
+
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--color-linkedin-bg)]">
          <div className="flex flex-col items-center gap-4">
             <div className="w-8 h-8 border-4 border-gray-200 border-t-[var(--color-linkedin-blue)] rounded-full animate-spin"></div>
-            <p className="text-[var(--color-linkedin-text-muted)] font-medium">Generating logic grid...</p>
+            <p className="text-[var(--color-linkedin-text-muted)] font-medium">
+              {loading ? 'Generating logic grid...' : 'Checking authentication...'}
+            </p>
          </div>
       </div>
     );
@@ -69,6 +84,9 @@ function App() {
   const mins = Math.floor(timeLapsed / 60);
   const secs = timeLapsed % 60;
   const timeStr = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+  // Show profile modal if logged in but no display name set
+  const needsProfile = !!user && (!profile || !profile.display_name);
 
   return (
     <div className="min-h-screen bg-[var(--color-linkedin-bg)] flex flex-col font-sans">
@@ -157,6 +175,13 @@ function App() {
 
       {showLearnShapes && (
          <LearnShapesModal onClose={() => setShowLearnShapes(false)} />
+      )}
+
+      {needsProfile && (
+         <ProfileModal 
+            onSave={handleSaveProfile} 
+            loading={updatingProfile} 
+         />
       )}
     </div>
   );
