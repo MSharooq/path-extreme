@@ -52,19 +52,25 @@ export function LeaderboardModal({ puzzleDate, currentUserId, onClose }: Leaderb
   }, [puzzleDate]);
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+    <div 
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 cursor-pointer"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-300 cursor-default"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Header */}
         <div className="relative p-6 pb-4 bg-gradient-to-br from-[#0A66C2] to-[#0950a8] text-white flex-shrink-0">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
+            className="absolute top-4 right-4 z-10 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center gap-1.5 transition-all backdrop-blur-md active:scale-95 group"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
+            <span className="text-xs font-bold uppercase tracking-wider">Close</span>
           </button>
           <div className="flex items-center gap-3 mb-1">
             <span className="text-3xl">🏆</span>

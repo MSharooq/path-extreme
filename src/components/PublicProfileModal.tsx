@@ -81,17 +81,25 @@ export function PublicProfileModal({ userId, onClose }: PublicProfileModalProps)
   }, [userId]);
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+    <div 
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4 cursor-pointer"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-300 cursor-default"
+        onClick={(e) => e.stopPropagation()}
+      >
 
-        {/* Close */}
+        {/* Back Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-8 h-8 bg-black/10 hover:bg-black/20 rounded-full flex items-center justify-center transition-colors"
+          className="absolute top-4 left-4 z-10 px-3 py-1.5 bg-black/20 hover:bg-black/30 text-white rounded-full flex items-center gap-1.5 transition-all backdrop-blur-md active:scale-95 group"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:-translate-x-0.5 transition-transform">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
+          <span className="text-xs font-bold uppercase tracking-wider">Back</span>
         </button>
 
         {loading ? (

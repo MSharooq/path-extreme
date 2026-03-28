@@ -136,6 +136,7 @@ export function useAuth() {
     linkedin_url?: string | null;
     github_url?: string | null;
     portfolio_url?: string | null;
+    country_code?: string | null;
   }) {
     if (!user) return;
     const { data, error } = await supabase

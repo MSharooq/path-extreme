@@ -3,9 +3,28 @@ import type { Profile } from '../hooks/useAuth';
 
 interface EditProfileModalProps {
   profile: Profile;
-  onSave: (fields: { linkedin_url?: string | null; github_url?: string | null; portfolio_url?: string | null }) => Promise<void>;
+  onSave: (fields: { linkedin_url?: string | null; github_url?: string | null; portfolio_url?: string | null; country_code?: string | null }) => Promise<void>;
   onClose: () => void;
 }
+
+const COMMON_COUNTRIES = [
+  { code: 'US', name: 'United States' },
+  { code: 'IN', name: 'India' },
+  { code: 'GB', name: 'United Kingdom' },
+  { code: 'CA', name: 'Canada' },
+  { code: 'AU', name: 'Australia' },
+  { code: 'DE', name: 'Germany' },
+  { code: 'FR', name: 'France' },
+  { code: 'BR', name: 'Brazil' },
+  { code: 'JP', name: 'Japan' },
+  { code: 'AE', name: 'UAE' },
+  { code: 'SG', name: 'Singapore' },
+  { code: 'ID', name: 'Indonesia' },
+  { code: 'MY', name: 'Malaysia' },
+  { code: 'PH', name: 'Philippines' },
+  { code: 'ES', name: 'Spain' },
+  { code: 'IT', name: 'Italy' },
+];
 
 const LinkedInIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-[#0A66C2]">
@@ -31,6 +50,7 @@ export function EditProfileModal({ profile, onSave, onClose }: EditProfileModalP
   const [linkedin, setLinkedin] = useState(profile.linkedin_url ?? '');
   const [github, setGithub] = useState(profile.github_url ?? '');
   const [portfolio, setPortfolio] = useState(profile.portfolio_url ?? '');
+  const [country, setCountry] = useState(profile.country_code ?? '');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -43,6 +63,7 @@ export function EditProfileModal({ profile, onSave, onClose }: EditProfileModalP
         linkedin_url: linkedin.trim() || null,
         github_url: github.trim() || null,
         portfolio_url: portfolio.trim() || null,
+        country_code: country.trim() || null,
       });
       onClose();
     } catch {
@@ -53,8 +74,14 @@ export function EditProfileModal({ profile, onSave, onClose }: EditProfileModalP
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+    <div 
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] flex items-center justify-center p-4 cursor-pointer"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-300 cursor-default"
+        onClick={(e) => e.stopPropagation()}
+      >
 
         <div className="p-6 border-b border-gray-100">
           <div className="flex items-center justify-between">
@@ -120,6 +147,51 @@ export function EditProfileModal({ profile, onSave, onClose }: EditProfileModalP
                 placeholder="https://yourportfolio.dev"
                 className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-violet-200 focus:border-violet-400 outline-none text-sm font-medium transition-all"
               />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider pl-1">Country</label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  {country ? (
+                    <img
+                      src={`https://flagcdn.com/20x15/${country.toLowerCase()}.png`}
+                      width="20"
+                      height="15"
+                      alt={country}
+                      className="rounded-[2px]"
+                    />
+                  ) : (
+                    <span className="text-lg">🌍</span>
+                  )}
+                </div>
+                <select
+                  value={country}
+                  onChange={e => setCountry(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-200 focus:border-[#0A66C2] outline-none text-sm font-bold transition-all appearance-none"
+                >
+                  <option value="">Select a country...</option>
+                  {COMMON_COUNTRIES.filter(c => c.code !== country).concat(COMMON_COUNTRIES.find(c => c.code === country) ? [] : [{ code: country, name: country }]).filter(c => c.code).sort((a,b) => a.name.localeCompare(b.name)).map(c => (
+                    <option key={c.code} value={c.code}>{c.name}</option>
+                  ))}
+                  <option value="--">Other / Custom code...</option>
+                </select>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+              </div>
+              {country === '--' && (
+                <input
+                  type="text"
+                  placeholder="Enter 2-letter ISO code (e.g. BR, JP)"
+                  maxLength={2}
+                  className="w-full mt-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm font-mono uppercase focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                  onBlur={e => {
+                    const val = e.target.value.toUpperCase();
+                    if (val.length === 2) setCountry(val);
+                  }}
+                />
+              )}
             </div>
           </div>
 
