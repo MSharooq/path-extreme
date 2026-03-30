@@ -19,7 +19,10 @@ export function useGameState(puzzle: Puzzle | null, onWin: () => void, isPaused:
       setLockedPieces(new Set());
       setSolved(false);
       setMoves(0);
-      setTimeLapsed(0);
+      
+      const timerStore = localStorage.getItem(`patches_plus_timer_${puzzle.date}`);
+      setTimeLapsed(timerStore ? parseInt(timerStore, 10) : 0);
+      
       setLastHintTime(0);
       
       const stored = localStorage.getItem(`patches_plus_solved_${puzzle.date}`);
@@ -36,7 +39,11 @@ export function useGameState(puzzle: Puzzle | null, onWin: () => void, isPaused:
   useEffect(() => {
     if (!puzzle || solved || isPaused) return;
     const interval = setInterval(() => {
-      setTimeLapsed(t => t + 1);
+      setTimeLapsed(t => {
+        const next = t + 1;
+        localStorage.setItem(`patches_plus_timer_${puzzle.date}`, next.toString());
+        return next;
+      });
     }, 1000);
     return () => clearInterval(interval);
   }, [puzzle, solved, isPaused]);
@@ -144,7 +151,7 @@ export function useGameState(puzzle: Puzzle | null, onWin: () => void, isPaused:
     setLockedPieces(new Set());
     setSolved(false);
     setMoves(0);
-    setTimeLapsed(0);
+    // Timer is specifically NOT reset here as per user requirement
     setLastHintTime(0);
   };
 
