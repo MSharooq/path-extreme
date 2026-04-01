@@ -114,7 +114,19 @@ export function useAuth() {
 
   async function signOut() {
     const { error } = await supabase.auth.signOut();
-    if (error) console.error('Error signing out:', error);
+    if (error) {
+      console.error('Error signing out:', error);
+    } else {
+      const keysToRemove: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('patches_plus_')) {
+          keysToRemove.push(key);
+        }
+      }
+      keysToRemove.forEach(k => localStorage.removeItem(k));
+      sessionStorage.removeItem('patch_extreme_guest');
+    }
   }
 
   async function updateDisplayName(name: string) {

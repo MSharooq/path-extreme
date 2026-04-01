@@ -38,19 +38,20 @@ export function TopBar({ streak, dateStr, timeLapsed, solved, onReset, onSignInR
           className="w-8 h-8 rounded shadow-sm transition-transform hover:scale-105 cursor-pointer"
         />
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight m-0 text-[var(--color-linkedin-text)] leading-none">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight m-0 text-[var(--color-linkedin-text)] leading-none max-[380px]:hidden">
             PatchExtreme
           </h1>
-          <div className="text-sm font-normal text-[var(--color-linkedin-text-muted)] mt-0.5">{formattedDate}</div>
+          <div className="text-sm font-normal text-[var(--color-linkedin-text-muted)] mt-0.5 max-[380px]:hidden">{formattedDate}</div>
         </div>
       </div>
       <div className="flex items-center gap-2 sm:gap-4">
         {solved && (
           <button 
             onClick={onReset}
-            className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold text-[var(--color-linkedin-blue)] hover:bg-[#0A66C21A] transition-colors"
+            className="p-1.5 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold text-[var(--color-linkedin-blue)] hover:bg-[#0A66C21A] transition-colors flex items-center gap-1"
           >
-            Reset Board
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="sm:hidden"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+            <span className="hidden sm:inline">Reset Board</span>
           </button>
         )}
         <div className="hidden sm:flex items-center gap-1.5 text-[var(--color-linkedin-text-muted)] font-semibold text-sm">
