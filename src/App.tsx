@@ -167,7 +167,7 @@ function App() {
       />
       
       <main className="flex-1 flex flex-col items-center py-6 px-4 md:py-12 relative overflow-y-auto w-full">
-         <div className="w-full max-w-lg transform transition-all">
+         <div className="w-full max-w-lg transform transition-all animate-fade-in">
             <div className="flex justify-between items-center mb-5 transition-all px-1">
                <div className="bg-white border border-[var(--color-linkedin-border)] rounded-full px-4 py-1.5 text-sm md:text-base font-mono text-[var(--color-linkedin-text)] shadow-sm font-semibold flex items-center gap-2">
                  <ClockIcon /> {timeStr}

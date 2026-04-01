@@ -79,10 +79,12 @@ export function useGameState(puzzle: Puzzle | null, onWin: () => void, isPaused:
 
   const onPaint = (pieceId: string, r: number, c: number) => {
      if (lockedPieces.has(pieceId)) return;
+     
+     const current = drafts[pieceId] || [];
+     if (current.some(cell => cell[0] === r && cell[1] === c)) return; 
+
+     pushHistory();
      setDrafts(prev => {
-         const current = prev[pieceId] || [];
-         if (current.some(cell => cell[0] === r && cell[1] === c)) return prev; 
-         
          const newDrafts = { ...prev };
          for (const id of Object.keys(newDrafts)) {
              if (id === pieceId) continue;
