@@ -167,7 +167,7 @@ function App() {
       />
       
       <main className="flex-1 flex flex-col items-center py-6 px-4 md:py-12 relative overflow-y-auto w-full">
-         <div className="w-full max-w-lg transform transition-all animate-fade-in">
+         <div className="w-full max-w-lg transform transition-all">
             <div className="flex justify-between items-center mb-5 transition-all px-1">
                <div className="bg-white border border-[var(--color-linkedin-border)] rounded-full px-4 py-1.5 text-sm md:text-base font-mono text-[var(--color-linkedin-text)] shadow-sm font-semibold flex items-center gap-2">
                  <ClockIcon /> {timeStr}
@@ -208,7 +208,14 @@ function App() {
                   </button>
                </div>
                
-               <div className="flex justify-center w-full mt-4">
+               <div className="flex flex-col items-center w-full mt-4 gap-3">
+                  <button 
+                     onClick={() => setShowTutorial(true)}
+                     className="w-full max-w-[344px] py-3 bg-white border border-[var(--color-linkedin-border)] text-[var(--color-linkedin-blue)] font-bold rounded-xl shadow-sm hover:bg-blue-50 transition-all text-[15px] flex justify-center items-center gap-2 active:scale-95 hover:border-blue-200"
+                  >
+                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                     Replay Tutorial
+                  </button>
                   <button 
                      onClick={() => setShowLearnShapes(true)} 
                      className="w-full max-w-[344px] py-3 bg-white border border-[var(--color-linkedin-border)] text-teal-700 font-bold rounded-xl shadow-sm hover:bg-teal-50 transition-all text-[15px] flex justify-center items-center gap-2 active:scale-95 hover:border-teal-200"
@@ -226,15 +233,6 @@ function App() {
                   <li><strong className="text-[var(--color-linkedin-text)] block mb-0.5">Fixing Mistakes:</strong> Just click securely on an already drawn anchor to instantly clear and reset that specific shape!</li>
                   <li><strong className="text-[var(--color-linkedin-text)] block mb-0.5">Solutions & Locking:</strong> Once a painted shape exactly matches its puzzle solution orientation on the board, it will display hatching lines and lock permanently into the grid.</li>
                </ul>
-               <div className="mt-6 pt-4 border-t border-gray-100">
-                  <button 
-                    onClick={() => setShowTutorial(true)}
-                    className="flex items-center gap-2 text-[var(--color-linkedin-blue)] font-bold text-sm hover:underline"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    Replay Tutorial
-                  </button>
-                </div>
             </div>
          </div>
       </main>
