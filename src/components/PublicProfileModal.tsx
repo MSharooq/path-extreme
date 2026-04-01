@@ -179,7 +179,7 @@ export function PublicProfileModal({ userId, onClose }: PublicProfileModalProps)
               {profile.best_score != null && (
                 <div className="mt-4 bg-gray-50/80 border border-gray-100 rounded-2xl px-5 py-3.5 flex items-center justify-between transition-all hover:bg-gray-50">
                   <span className="text-sm text-gray-500 font-bold uppercase tracking-wider">Best Score</span>
-                  <span className="text-lg font-bold text-gray-900 tracking-tight">{profile.best_score} <span className="text-xs font-semibold text-gray-400 ml-0.5 uppercase tracking-normal">pts</span></span>
+                  <span className="text-lg font-bold text-gray-900 tracking-tight">{profile.best_score} <span className="text-xs font-semibold text-gray-400 ml-0.5 uppercase tracking-normal">score</span></span>
                 </div>
               )}
 

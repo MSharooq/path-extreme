@@ -159,7 +159,7 @@ export function LeaderboardModal({ puzzleDate, currentUserId, onClose }: Leaderb
                     {/* Score */}
                     <div className="text-right flex-shrink-0 bg-white/50 px-3 py-1.5 rounded-lg border border-gray-100/50">
                       <div className="text-base font-bold text-[#0A66C2]">{entry.composite_score}</div>
-                      <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">pts</div>
+                      <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">score</div>
                     </div>
                   </div>
                 );
