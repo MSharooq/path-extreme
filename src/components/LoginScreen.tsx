@@ -67,9 +67,11 @@ export function LoginScreen({ onGuest }: LoginScreenProps) {
       <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transition-all duration-500 animate-in fade-in zoom-in-95 duration-700">
         {/* Header */}
         <div className="p-8 pb-6 text-center border-b border-gray-50 bg-gradient-to-b from-blue-50/50 to-white">
-          <div className="w-10 h-10 bg-[#0A66C2] rounded-lg text-white flex items-center justify-center font-bold text-2xl shadow-sm mb-4 mx-auto">
-            in
-          </div>
+          <img 
+            src="/maskable-icon.png" 
+            alt="PatchExtreme Logo" 
+            className="w-12 h-12 rounded-lg shadow-md mb-4 mx-auto transition-all"
+          />
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Welcome to PatchExtreme</h1>
           <p className="text-gray-500 font-medium mb-8">The daily logic game for strategic thinkers.</p>
         </div>

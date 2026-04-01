@@ -32,9 +32,11 @@ export function TopBar({ streak, dateStr, timeLapsed, solved, onReset, onSignInR
   return (
     <div className="flex justify-between items-center w-full px-4 sm:px-6 py-3 bg-white border-b border-[var(--color-linkedin-border)] sticky top-0 z-50 shadow-sm transition-all duration-300">
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 bg-[var(--color-linkedin-blue)] rounded text-white flex items-center justify-center font-bold text-xl cursor-default shadow-sm transition-transform hover:scale-105">
-          in
-        </div>
+        <img 
+          src="/maskable-icon.png" 
+          alt="PatchExtreme Logo" 
+          className="w-8 h-8 rounded shadow-sm transition-transform hover:scale-105 cursor-pointer"
+        />
         <div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight m-0 text-[var(--color-linkedin-text)] leading-none">
             PatchExtreme

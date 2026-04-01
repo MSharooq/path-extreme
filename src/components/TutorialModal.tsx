@@ -67,9 +67,11 @@ export function TutorialModal({ onClose }: TutorialModalProps) {
       description: "A daily logic game where you solve spatial puzzles by fitting specific shapes into a grid. It's like a mix of Sudoku and Tetris!",
       content: (
         <div className="flex flex-col items-center py-6">
-          <div className="w-16 h-16 bg-[var(--color-linkedin-blue)] rounded-xl text-white flex items-center justify-center font-bold text-4xl shadow-lg mb-6 animate-bounce">
-            in
-          </div>
+          <img 
+            src="/maskable-icon.png" 
+            alt="PatchExtreme Logo" 
+            className="w-20 h-20 rounded-2xl shadow-xl mb-6 animate-bounce"
+          />
           <div className="flex gap-2">
             {[0, 1, 2].map(i => (
               <div key={i} className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center animate-pulse" style={{ animationDelay: `${i * 200}ms` }}>
