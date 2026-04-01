@@ -21,10 +21,12 @@ export function usePuzzle() {
         throw new Error(fetchError?.message || 'Daily puzzle not found for today. Please check back later!');
       }
 
+      const puzzleData = data as any;
+
       setPuzzle({
-        date: data.date,
-        dayOfWeek: data.day_of_week,
-        pieces: data.pieces,
+        date: puzzleData.date,
+        dayOfWeek: puzzleData.day_of_week,
+        pieces: puzzleData.pieces,
         grid: Array.from({length:8}, ()=>Array(8).fill(null)),
         solution: [] // Solution is verified on submission if needed
       });
