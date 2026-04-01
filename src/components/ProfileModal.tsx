@@ -34,9 +34,11 @@ export function ProfileModal({ onSave, loading }: ProfileModalProps) {
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-in fade-in zoom-in duration-300">
         <div className="p-8">
           <div className="flex flex-col items-center mb-6">
-            <div className="w-16 h-16 bg-[var(--color-linkedin-blue)] rounded-xl text-white flex items-center justify-center font-bold text-3xl mb-4 shadow-lg">
-              in
-            </div>
+            <img 
+              src="/maskable-icon.png" 
+              alt="PatchExtreme Logo" 
+              className="w-16 h-16 rounded-xl shadow-lg mb-4"
+            />
             <h2 className="text-2xl font-bold text-[var(--color-linkedin-text)] text-center">Welcome to PatchExtreme!</h2>
             <p className="text-[var(--color-linkedin-text-muted)] text-center mt-2 leading-relaxed">
               Before you start competing on the leaderboard, please choose a unique display name.

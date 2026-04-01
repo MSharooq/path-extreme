@@ -57,14 +57,15 @@ export function LoginScreen({ onGuest }: LoginScreenProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col justify-start items-center min-h-[100dvh] p-4 py-8 sm:p-6 bg-[#f3f2f0] overflow-y-auto">
+    <div className="fixed inset-0 z-[100] bg-[#f3f2f0] overflow-y-auto w-full">
       {/* Background Decor */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-100/50 blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-indigo-100/50 blur-3xl animate-pulse delay-1000"></div>
       </div>
 
-      <div className="relative w-full max-w-md my-auto bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transition-all duration-500 animate-in fade-in zoom-in-95 duration-700">
+      <div className="min-h-full flex flex-col items-center justify-center p-4 py-8 sm:p-6 w-full relative z-10">
+        <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transition-all duration-500 animate-in fade-in zoom-in-95 duration-700">
         {/* Header */}
         <div className="p-8 pb-6 text-center border-b border-gray-50 bg-gradient-to-b from-blue-50/50 to-white">
           <img 
@@ -164,6 +165,7 @@ export function LoginScreen({ onGuest }: LoginScreenProps) {
                 </p>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>

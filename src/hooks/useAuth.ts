@@ -119,15 +119,28 @@ export function useAuth() {
 
   async function updateDisplayName(name: string) {
     if (!user) return;
-    const { data, error } = await supabase
-      .from('profiles')
-      .upsert({ 
-        id: user.id, 
-        display_name: name,
-        updated_at: new Date().toISOString()
-      }, { onConflict: 'id' })
-      .select()
-      .single();
+    
+    let query;
+    if (profile) {
+      query = supabase
+        .from('profiles')
+        .update({ 
+          display_name: name,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id);
+    } else {
+      query = supabase
+        .from('profiles')
+        .insert({ 
+          id: user.id, 
+          display_name: name,
+          updated_at: new Date().toISOString()
+        });
+    }
+
+    const { data, error } = await query.select().single();
+
     if (error) throw error;
     else { setProfile(data); return data; }
   }
