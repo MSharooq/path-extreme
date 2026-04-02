@@ -40,6 +40,7 @@ function App() {
   const [showTutorial, setShowTutorial] = useState(() => {
     return !localStorage.getItem('patch_extreme_tutorial_seen');
   });
+  const [countdown, setCountdown] = useState('');
 
   const handleWin = async () => {
     if (puzzle) incrementStreak(puzzle.date);
@@ -53,6 +54,8 @@ function App() {
       }
     }
   };
+
+  const alreadySolvedDB = user?.user_metadata?.last_solved === puzzle?.date;
 
   const {
     drafts,
@@ -68,13 +71,38 @@ function App() {
     moves,
     timeLapsed,
     lastHintTime
-  } = useGameState(puzzle, handleWin, showTutorial || showLearnShapes);
+  } = useGameState(puzzle, handleWin, showTutorial || showLearnShapes, alreadySolvedDB);
 
   useEffect(() => {
     const handleOpenWorldRank = () => setShowWorldRank(true);
     window.addEventListener('open-world-rank', handleOpenWorldRank);
     return () => window.removeEventListener('open-world-rank', handleOpenWorldRank);
   }, []);
+
+  useEffect(() => {
+    if (!solved) return;
+    
+    const updateCountdown = () => {
+      const now = new Date();
+      const nextMidnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+      const diff = nextMidnight.getTime() - now.getTime();
+      
+      if (diff <= 0) {
+        setCountdown('00:00:00');
+        return;
+      }
+
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      
+      setCountdown(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
+    };
+    
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, [solved]);
 
   const handleSaveProfile = async (displayName: string) => {
     setUpdatingProfile(true);
@@ -191,22 +219,38 @@ function App() {
             />
 
             <div className="mt-8 flex flex-col items-center select-none w-full border-t border-[var(--color-linkedin-border)] pt-6">
-               <div className="flex justify-center w-full gap-3 sm:gap-6">
-                  <button 
-                     onClick={undo} 
-                     disabled={history.length === 0 || solved} 
-                     className="flex-1 max-w-[160px] py-2.5 bg-white border border-[var(--color-linkedin-border)] text-[var(--color-linkedin-text)] font-semibold rounded-xl shadow-sm hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm flex justify-center items-center gap-1.5"
-                  >
-                     <UndoIcon /> Undo
-                  </button>
-                  <button 
-                     onClick={applyHint} 
-                     disabled={hintCooldownActive || solved} 
-                     className="flex-1 max-w-[160px] py-2.5 bg-white border border-[var(--color-linkedin-border)] text-[var(--color-linkedin-blue)] font-bold rounded-xl shadow-sm hover:bg-[var(--color-linkedin-blue)] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm flex justify-center items-center gap-1.5 active:scale-95 hover:border-[var(--color-linkedin-blue)]"
-                  >
-                     <HintIcon /> Hint {hintCooldownActive && `(${hintSecondsLeft}s)`}
-                  </button>
-               </div>
+               {solved ? (
+                 <div className="w-full bg-green-50 border border-green-200 rounded-2xl p-6 text-center animate-in fade-in slide-in-from-bottom-4 duration-500 shadow-sm">
+                   <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
+                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                   </div>
+                   <h3 className="text-xl font-bold text-green-800 mb-1">Puzzle Solved!</h3>
+                   <p className="text-green-700 font-medium mb-3">Amazing job completing today's challenge.</p>
+                   
+                   <div className="mt-4 bg-white/60 rounded-xl p-3 border border-green-100 inline-block w-full max-w-[280px]">
+                      <div className="text-xs font-bold text-green-600 uppercase tracking-wider mb-1">Next puzzle drops in</div>
+                      <div className="text-2xl font-black text-green-800 tracking-tight font-mono">{countdown}</div>
+                      <div className="text-[10px] text-green-600/70 font-semibold mt-1">Based on UTC Time</div>
+                   </div>
+                 </div>
+               ) : (
+                 <div className="flex justify-center w-full gap-3 sm:gap-6">
+                    <button 
+                       onClick={undo} 
+                       disabled={history.length === 0} 
+                       className="flex-1 max-w-[160px] py-2.5 bg-white border border-[var(--color-linkedin-border)] text-[var(--color-linkedin-text)] font-semibold rounded-xl shadow-sm hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm flex justify-center items-center gap-1.5"
+                    >
+                       <UndoIcon /> Undo
+                    </button>
+                    <button 
+                       onClick={applyHint} 
+                       disabled={hintCooldownActive} 
+                       className="flex-1 max-w-[160px] py-2.5 bg-white border border-[var(--color-linkedin-border)] text-[var(--color-linkedin-blue)] font-bold rounded-xl shadow-sm hover:bg-[var(--color-linkedin-blue)] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm flex justify-center items-center gap-1.5 active:scale-95 hover:border-[var(--color-linkedin-blue)]"
+                    >
+                       <HintIcon /> Hint {hintCooldownActive && `(${hintSecondsLeft}s)`}
+                    </button>
+                 </div>
+               )}
                
                <div className="flex flex-col items-center w-full mt-4 gap-3">
                   <button 

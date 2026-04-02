@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { Puzzle } from '../types';
 import { type CellPos, isValidShape } from '../engine/shapes';
 
-export function useGameState(puzzle: Puzzle | null, onWin: () => void, isPaused: boolean = false) {
+export function useGameState(puzzle: Puzzle | null, onWin: () => void, isPaused: boolean = false, alreadySolvedDB: boolean = false) {
   const [drafts, setDrafts] = useState<Record<string, CellPos[]>>({});
   const [history, setHistory] = useState<Record<string, CellPos[]>[]>([]);
   const [lockedPieces, setLockedPieces] = useState<Set<string>>(new Set());
@@ -26,7 +26,7 @@ export function useGameState(puzzle: Puzzle | null, onWin: () => void, isPaused:
       setLastHintTime(0);
       
       const stored = localStorage.getItem(`patches_plus_solved_${puzzle.date}`);
-      if (stored) {
+      if (stored || alreadySolvedDB) {
         setSolved(true);
         const solvedDrafts: Record<string, CellPos[]> = {};
         puzzle.pieces.forEach(p => solvedDrafts[p.id] = p.cells);
@@ -34,7 +34,7 @@ export function useGameState(puzzle: Puzzle | null, onWin: () => void, isPaused:
         setLockedPieces(new Set(puzzle.pieces.map(p => p.id)));
       }
     }
-  }, [puzzle]);
+  }, [puzzle, alreadySolvedDB]);
 
   useEffect(() => {
     if (!puzzle || solved || isPaused) return;
