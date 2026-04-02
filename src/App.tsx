@@ -25,8 +25,8 @@ const ShapesIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="n
 
 function App() {
   const { puzzle, loading, error } = usePuzzle();
-  const { streak, incrementStreak } = useStreak();
   const { user, profile, updateDisplayName, updateProfile, loading: authLoading } = useAuth();
+  const { streak, incrementStreak } = useStreak(user);
   const [isGuest, setIsGuest] = useState(() => {
     return sessionStorage.getItem('patch_extreme_guest') === 'true';
   });
