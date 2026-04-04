@@ -57,7 +57,7 @@ export async function fetchLeaderboard(puzzleDate: string): Promise<LeaderboardE
     .from('leaderboard')
     .select('*')
     .eq('puzzle_date', puzzleDate)
-    .order('composite_score', { ascending: true })
+    .order('composite_score', { ascending: false })
     .limit(50);
 
   if (error) {

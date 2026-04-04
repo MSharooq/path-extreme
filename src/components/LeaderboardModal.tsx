@@ -171,7 +171,7 @@ export function LeaderboardModal({ puzzleDate, currentUserId, onClose }: Leaderb
         {/* Footer */}
         <div className="p-4 border-t border-gray-100 bg-gray-50/50 flex-shrink-0">
           <p className="text-center text-xs text-gray-400 font-medium">
-            Tap any row to view profile &nbsp;·&nbsp; Score = Time (s) + Moves × 5
+            Tap any row to view profile &nbsp;·&nbsp; Score = 10000 - (Time (s) + Moves × 5)
           </p>
         </div>
       </div>
