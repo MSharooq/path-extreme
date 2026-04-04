@@ -4,7 +4,7 @@ import { type CellPos, isValidShape } from '../engine/shapes';
 
 export function useGameState(puzzle: Puzzle | null, onWin: () => void, isPaused: boolean = false, alreadySolvedDB: boolean = false) {
   const [drafts, setDrafts] = useState<Record<string, CellPos[]>>({});
-  const [history, setHistory] = useState<Record<string, CellPos[]>[]>([]);
+  const [history, setHistory] = useState<{ drafts: Record<string, CellPos[]>, lockedPieces: Set<string> }[]>([]);
   const [lockedPieces, setLockedPieces] = useState<Set<string>>(new Set());
   
   const [solved, setSolved] = useState(false);
@@ -108,14 +108,15 @@ export function useGameState(puzzle: Puzzle | null, onWin: () => void, isPaused:
   };
 
   const pushHistory = () => {
-      setHistory(prev => [...prev, drafts]);
+      setHistory(prev => [...prev, { drafts, lockedPieces: new Set(lockedPieces) }]);
       setMoves(m => m + 1);
   };
 
   const undo = () => {
       if (history.length > 0) {
           const last = history[history.length - 1];
-          setDrafts(last);
+          setDrafts(last.drafts);
+          setLockedPieces(last.lockedPieces);
           setHistory(prev => prev.slice(0, -1));
           setMoves(m => m + 1);
       }
