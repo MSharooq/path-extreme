@@ -278,7 +278,16 @@ function App() {
                   <li><strong className="text-[var(--color-linkedin-text)] block mb-0.5">Solutions & Locking:</strong> Once a painted shape exactly matches its puzzle solution orientation on the board, it will display hatching lines and lock permanently into the grid.</li>
                </ul>
             </div>
-         </div>
+            
+            <a
+              href="https://www.linkedin.com/in/mohammed-sharooq/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-10 mb-6 text-center text-xs text-gray-400 font-medium hover:text-blue-600 transition-colors block"
+            >
+              Made by @Sharooq
+            </a>
+          </div>
       </main>
 
       {showWin && (

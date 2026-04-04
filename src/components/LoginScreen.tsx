@@ -166,6 +166,14 @@ export function LoginScreen({ onGuest }: LoginScreenProps) {
               </div>
             </div>
           </div>
+          <a
+            href="https://www.linkedin.com/in/mohammed-sharooq/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-gray-400 hover:text-blue-600 transition-colors font-medium mt-6 block text-center"
+          >
+            Made by @Sharooq
+          </a>
           </div>
         </div>
       </div>
